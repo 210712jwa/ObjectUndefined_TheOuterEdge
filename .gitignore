@@ -1,5 +1,6 @@
 .classpath
 .project
+.DS_Store
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,java,visualstudiocode,angular
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,java,visualstudiocode,angular
