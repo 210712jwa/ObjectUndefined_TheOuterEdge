@@ -11,7 +11,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter @Setter @NoArgsConstructor @EqualsAndHashCode @ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class FormStatus {
 	
 	@Id
