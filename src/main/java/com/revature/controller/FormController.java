@@ -13,7 +13,7 @@ import com.revature.service.FormService;
 
 
 @RestController
-@CrossOrigin("http://localhost:4201")
+@CrossOrigin("http://localhost:4200")
 public class FormController {
 
 	@Autowired
