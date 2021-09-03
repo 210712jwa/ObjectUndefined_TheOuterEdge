@@ -6,7 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import lombok.EqualsAndHashCode;
@@ -15,7 +17,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter @Setter @NoArgsConstructor @EqualsAndHashCode @ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class Form {
 
 	@Id
@@ -38,7 +44,8 @@ public class Form {
 	@Lob
 	private byte[] image;
 	
-	@Column(name = "author")
+	@ManyToOne
+	@JoinColumn(name = "author", nullable = false)
 	private Users author;
 	
 	@Column(name = "likes")
@@ -47,11 +54,16 @@ public class Form {
 	@Column(name = "dislikes")
 	private int dislikes;
 	
-	@Column(name = "verifier")
+	@ManyToOne
+	@JoinColumn(name = "verifier")
 	private Users verifier;
 	
-	@Column(name = "verify_staus")
+	@Column(name = "verify_staus", nullable = false)
 	private FormStatus verifyStatus;
+	
+//	@OneToMany
+//	@JoinColumn(name = "comments")
+//	private List<Comment> comments;
 	
 	
 	@Transient
