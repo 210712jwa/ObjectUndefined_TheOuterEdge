@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +23,7 @@ import lombok.ToString;
 
 
 @Entity
-@Table(name = "form")
+@Table(name = "forms")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -63,8 +65,9 @@ public class Form {
 	@JoinColumn(name = "verifier")
 	private Users verifier;
 	
-	@Column(name = "verify_staus", nullable = false)
-	private FormStatus verifyStatus;
+	@ManyToOne
+	@JoinColumn(name = "verify_staus", nullable = false)
+	private FormStatus formStatus;
 	
 //	@OneToMany
 //	@JoinColumn(name = "comments")
@@ -72,18 +75,19 @@ public class Form {
 	
 	
 	@Transient
+	@JsonIgnore
 	private long now = System.currentTimeMillis();
+	
 	@Transient
+	@JsonIgnore
 	private Timestamp submitTimestamp = new Timestamp(now);
 
-	public Form(String title, String description, Timestamp eventTime, int likes, int dislikes) {
+	public Form(String title, String description, Timestamp eventTime) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.submitted = submitTimestamp;
 		this.eventTime = eventTime;
-		this.likes = likes;
-		this.dislikes = dislikes;
 	}
 	
 }

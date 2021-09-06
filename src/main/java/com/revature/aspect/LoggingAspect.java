@@ -16,16 +16,18 @@ public class LoggingAspect {
 	private Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
 	@Before("execution(* com.revature.dao.*.*(..))")
-	public void logDaoMethodsBefore(JoinPoint myJointPoint) {
-		MethodSignature methodSignature = (MethodSignature) myJointPoint.getSignature();
+	public void logDaoMethodsBefore(JoinPoint myJoinPoint) {
+		MethodSignature methodSignature = (MethodSignature) myJoinPoint.getSignature();
 		String methodName = methodSignature.getName();
+		
 		logger.info("DAO method " + methodName + " is about to be executed");
 	}
 	
 	@AfterReturning(pointcut = "execution(* com.revature.dao.*.*(..))", returning = "myObject")
-	public void logDaoMethodAfterReturning(JoinPoint myJointPoint, Object myObject) {
-		MethodSignature methodSignature = (MethodSignature) myJointPoint.getSignature();
+	public void logDaoMethodAfterReturning(JoinPoint myJoinPoint, Object myObject) {
+		MethodSignature methodSignature = (MethodSignature) myJoinPoint.getSignature();
 		String methodName = methodSignature.getName();
-		logger.info("DAO method " + methodName + " successfully returned" + myObject);
+		
+		logger.info("DAO method " + methodName + " successfully returned " + myObject);
 	}
 }
