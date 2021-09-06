@@ -18,6 +18,15 @@ public class AddFormDTO {
 	private Timestamp eventTime;
 	
 	private byte[] image;
+
+	public AddFormDTO(String title, String description, Timestamp eventTime, byte[] image) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.eventTime = eventTime;
+		this.image = image;
+	}
+	
 	
 
 }
