@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.annotation.AdminProtected;
 import com.revature.annotation.UserProtected;
 import com.revature.dto.AddFormDTO;
+import com.revature.dto.EditFormStatusDTO;
 import com.revature.dto.MessageDTO;
 import com.revature.exception.BadParameterException;
 import com.revature.model.Form;
@@ -86,9 +87,9 @@ public class FormController {
 
 	@PatchMapping(path = "admin/{userId}/form/{formId}", consumes = "text/plain", produces = "application/json")
 	@AdminProtected
-	public ResponseEntity<Object> editFormStatusAdmin(@PathVariable String formId, @RequestBody String formStatus) {
+	public ResponseEntity<Object> editFormStatusAdmin(@PathVariable String formId, @RequestBody EditFormStatusDTO formStatusDto) {
 		try {
-			Form form = formService.editFormStatusAdmin(formId, formStatus);
+			Form form = formService.editFormStatusAdmin(formId, formStatusDto);
 			return ResponseEntity.status(200).body(form);
 		} catch (BadParameterException e) {
 			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));

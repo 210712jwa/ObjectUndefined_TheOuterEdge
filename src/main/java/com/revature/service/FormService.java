@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.dao.FormDAO;
 import com.revature.dto.AddFormDTO;
+import com.revature.dto.AddOrEditCommentDTO;
 import com.revature.dto.EditFormStatusDTO;
 import com.revature.exception.BadParameterException;
 import com.revature.model.Form;
@@ -75,6 +76,20 @@ public class FormService {
 
 	}
 
+	public Form addComment(String formId, AddOrEditCommentDTO commentDto) throws BadParameterException {
+		if(commentDto.getContent().trim().equals("")) {
+			throw new BadParameterException("Comment cannot be blank");
+		}
+		try {
+			int fId = Integer.parseInt(formId);
+			Form form = formDao.addComment(fId, commentDto);
+			return form;
+		}catch(NumberFormatException e) {
+			throw new BadParameterException("Form id is not an valid integer");
+		}
+		
+	}
+	
 	public void deleteForm(String formId) throws BadParameterException {
 		try {
 			int fId = Integer.parseInt(formId);
