@@ -1,7 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Output } from '@angular/core';
-import{ Form } from '../model/form';
-import { FormService } from './form.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -10,22 +7,4 @@ import { FormService } from './form.service';
 })
 export class AppComponent {
   title = 'the-outer-edge-frontend';
-
-  forms: Form[] = [];
-
-  constructor(private formService: FormService) {}
-  showErrorMessage = false;
-
-  formComponentShouldBeDisplayed: boolean = true;
-
-  ngOnInit(){
-    this.formService.getForms().subscribe((data) => {
-      this.forms = data;
-      console.log(data);
-    },
-    (err: HttpErrorResponse) => {
-      this.showErrorMessage = true;
-    
-    });
-  }
 }
