@@ -19,29 +19,34 @@ public class SecurityAspect {
 
 	@Autowired
 	private HttpServletRequest request;
-	
+
 	@Around("@annotation(com.revature.annotation.UserProtected)")
 	public Object userLoggedInOnlyProtector(ProceedingJoinPoint myProceedingJoinPoint) throws Throwable {
-		
+
 		HttpSession session = request.getSession(false);
-		
+
 		if (session == null || session.getAttribute("currentUser") == null) {
-			return ResponseEntity.status(401).body(new MessageDTO("You are not authorized to access this endpoint. You must be logged in."));
+			return ResponseEntity.status(401)
+					.body(new MessageDTO("You are not authorized to access this endpoint. You must be logged in."));
 		}
-		
-		
-		Object returnValue = myProceedingJoinPoint.proceed(); 
+
+		Object returnValue = myProceedingJoinPoint.proceed();
 		return returnValue;
 	}
-	
+
 	@Around("@annotation(com.revature.annotation.AdminProtected)")
 	public Object adminOnlyProtector(ProceedingJoinPoint myProceedingJoinPoint) throws Throwable {
 		HttpSession session = request.getSession(false);
-		Users user = (Users) session.getAttribute("currentUser");
-		if (session == null || user == null || user.getUserRole().getUserRole().equals("regular user")) {
+		if(session == null) {
 			return ResponseEntity.status(401).body(new MessageDTO("You are not authorized to access this endpoint. You must be login or an admin."));
-	}
-		Object returnValue = myProceedingJoinPoint.proceed(); 
+		}
+		if (session != null) {
+			Users user = (Users) session.getAttribute("currentUser");
+			if (user == null || user.getUserRole().getUserRole().equals("regular user")) {
+				return ResponseEntity.status(401).body(new MessageDTO("You are not authorized to access this endpoint. You must be login or an admin."));
+			}
+		}
+		Object returnValue = myProceedingJoinPoint.proceed();
 		return returnValue;
 	}
 
