@@ -84,6 +84,17 @@ public class FormController {
 			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
 		}
 	}
+	
+//	@PatchMapping(path = "user/{userId}/form/{formId}/comment")
+//	{
+//		HttpSession session = request.getSession(false);
+//		Users user = (Users) session.getAttribute("currentUser");
+//		String currentUserId = Integer.toString(user.getId());
+//		if (!userId.equals(currentUserId)) {
+//			return ResponseEntity.status(401).body(new MessageDTO("unauthorized action."));
+//		}
+//		
+//	}
 
 	@PatchMapping(path = "admin/{userId}/form/{formId}", consumes = "text/plain", produces = "application/json")
 	@AdminProtected
