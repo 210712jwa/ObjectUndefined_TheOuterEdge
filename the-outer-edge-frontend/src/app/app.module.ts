@@ -7,6 +7,7 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
 import { FormComponent } from './form/form.component';
 import { FormTableComponent } from './form-table/form-table.component';
 import { SearchComponent } from './search/search.component';
+import { FilterSearchComponent } from './filter-search/filter-search.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { SearchComponent } from './search/search.component';
     NavigationBarComponent,
     FormComponent,
     FormTableComponent,
-    SearchComponent
+    SearchComponent,
+    FilterSearchComponent
   ],
   imports: [
     BrowserModule,
