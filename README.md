@@ -12,6 +12,7 @@ Our UFO sighting application, the Outer Edge, will provide you with recent UFO s
 5. Selenium
 6. Angular
 
+## Contributors
+Chris Barton, Haifeng Zhu, David Huynh, Rob Granciosa
 
-Davids random comment
 
