@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.dao.FormDAO;
 import com.revature.dto.AddFormDTO;
+import com.revature.dto.EditFormStatusDTO;
 import com.revature.exception.BadParameterException;
 import com.revature.model.Form;
 
@@ -60,13 +61,13 @@ public class FormService {
 		}
 	}
 
-	public Form editFormStatusAdmin(String formId, String formStatus) throws BadParameterException {
-		if (!formStatus.equalsIgnoreCase("verified")) {
+	public Form editFormStatusAdmin(String formId, EditFormStatusDTO formStatusDto) throws BadParameterException {
+		if (!formStatusDto.getStatus().equalsIgnoreCase("verified")) {
 			throw new BadParameterException("Not an acceptance form status");
 		}
 		try {
 			int fId = Integer.parseInt(formId);
-			Form form = formDao.editFormStatusAdmin(fId, formStatus);
+			Form form = formDao.editFormStatusAdmin(fId, formStatusDto);
 			return form;
 		} catch (NumberFormatException e) {
 			throw new BadParameterException("form id is not an integer");

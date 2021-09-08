@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.dto.LoginDTO;
 import com.revature.dto.MessageDTO;
+import com.revature.exception.BadParameterException;
 import com.revature.model.Users;
 import com.revature.service.LoginService;
 
@@ -32,7 +33,7 @@ public class LoginController {
 	@PostMapping(path = "/login", consumes = "application/json" )
 	public ResponseEntity<Object> login(@RequestBody LoginDTO loginDto) {
 		try {
-			Users user = this.loginService.login(loginDto.getUsername(), loginDto.getPassword());
+			Users user = this.loginService.login(loginDto);
 			
 			
 			HttpSession session = request.getSession(true);
@@ -45,9 +46,11 @@ public class LoginController {
 
 			
 			return ResponseEntity.status(200).body(user);
+		} catch (BadParameterException e) {
+			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
 		} catch (LoginException e) {
 			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
-		}	
+		} 
 	}
 	
 	@GetMapping(path = "/currentuser")
@@ -62,5 +65,16 @@ public class LoginController {
 		Users user = (Users) session.getAttribute("currentUser");
 		return ResponseEntity.status(200).body(user);	
 	}
+	
+	@PostMapping(path = "/logout")
+	public ResponseEntity<Object> logout() {
+		HttpSession session = request.getSession(false);
+		
+		if (session == null || session.getAttribute("currentUser") == null) {
+			return ResponseEntity.status(400).body(new MessageDTO("You are not logged in!"));
+		}
+		return ResponseEntity.status(200).body(new MessageDTO("Successfully logged out"));
+	}
+		
 
 }

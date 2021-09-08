@@ -10,7 +10,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.dto.AddFormDTO;
+import com.revature.dto.AddOrEditCommentDTO;
 import com.revature.dto.AddUserDTO;
+import com.revature.dto.EditFormStatusDTO;
+import com.revature.model.Comment;
 import com.revature.model.Form;
 import com.revature.model.FormStatus;
 import com.revature.model.Users;
@@ -64,17 +67,29 @@ public class FormDAO {
 	}
 	
 	@Transactional
-	public Form editFormStatusAdmin(int formId, String formStatus) {
+	public Form editFormStatusAdmin(int formId, EditFormStatusDTO formStatusDto) {
 		Session session = sessionFactory.getCurrentSession();
 		String formHql = "FROM Form f WHERE f.id = :id";
 		Form form = (Form) session.createQuery(formHql).setParameter("id", formId).getSingleResult();
 		String statusHql = "FROM FromStatus fs WHERE fs.status = :formStatus";
-		FormStatus newFormStatus = (FormStatus) session.createQuery(statusHql).setParameter("formStatus", formStatus).getSingleResult();
+		FormStatus newFormStatus = (FormStatus) session.createQuery(statusHql).setParameter("formStatus", formStatusDto.getStatus()).getSingleResult();
 		form.setFormStatus(newFormStatus);
 		session.saveOrUpdate(form);
 		return form;
 	}
 	
+	@Transactional
+	public Form addComment(int formId, AddOrEditCommentDTO commentDto) {
+		Session session = sessionFactory.getCurrentSession();
+		String formHql = "FROM Form f WHERE f.id = :id";
+		Form form = (Form) session.createQuery(formHql).setParameter("id", formId).getSingleResult();
+		Comment comment = new Comment(commentDto.getContent());
+		List<Comment> formCommentList = form.getComments();
+		formCommentList.add(comment);
+		form.setComments(formCommentList);
+		session.saveOrUpdate(form);
+		return form;
+	}
 
 	@Transactional
 	public void deleteForm(int formId) {
@@ -84,6 +99,8 @@ public class FormDAO {
 			throw new HibernateException("Fail to delete form");
 		}
 	}
+	
+	
 	
 
 }

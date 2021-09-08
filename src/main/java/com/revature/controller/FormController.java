@@ -48,7 +48,7 @@ public class FormController {
 			HttpSession session = request.getSession(false);
 			Users user = (Users) session.getAttribute("currentUser");
 			String currentUserId = Integer.toString(user.getId());
-			if (userId.equals(currentUserId)) {
+			if (!userId.equals(currentUserId)) {
 				return ResponseEntity.status(401).body(new MessageDTO("unauthorized action."));
 			}
 			Form form = formService.addForm(userId, addFormDTO);
@@ -73,7 +73,7 @@ public class FormController {
 			HttpSession session = request.getSession(false);
 			Users user = (Users) session.getAttribute("currentUser");
 			String currentUserId = Integer.toString(user.getId());
-			if (userId.equals(currentUserId)) {
+			if (!userId.equals(currentUserId)) {
 				return ResponseEntity.status(401).body(new MessageDTO("unauthorized action."));
 			}
 			Form form = formService.editFormById(formId, editFormDTO);
@@ -102,7 +102,7 @@ public class FormController {
 			HttpSession session = request.getSession(false);
 			Users user = (Users) session.getAttribute("currentUser");
 			String currentUserId = Integer.toString(user.getId());
-			if (userId.equals(currentUserId)) {
+			if (!userId.equals(currentUserId)) {
 				return ResponseEntity.status(401).body(new MessageDTO("unauthorized action."));
 			}
 			formService.deleteForm(formId);

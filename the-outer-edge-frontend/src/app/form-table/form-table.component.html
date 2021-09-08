@@ -2,15 +2,24 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Date</th>
-          <th>City</th>
-          <th>State</th>
-          <th>Country</th>
-          <th>Shape</th>
-          <th>Duration</th>
-          <th>Comments</th>
+          <th>title</th>
+          <th>description</th>
+          <th>image</th>
+          <th>like</th>
+          <th>dislike</th>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody>
+          <ng-container *ngFor="let form of allForm">
+            <tr>
+              
+              <td>{{ form.title}}</td>
+              <td>{{ form.description }}</td>
+              <td> {{ form.image }}</td>
+              <td>{{form.like ? form.like: 0}}</td>
+              <td>{{form.dislike ? form.dislike: 0}}</td>
+            </tr>
+          </ng-container>
+      </tbody>
     </table>
   </div>
