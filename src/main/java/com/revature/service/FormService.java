@@ -5,6 +5,10 @@ import org.springframework.stereotype.Service;
 
 import com.revature.dao.FormDAO;
 import com.revature.dto.AddFormDTO;
+
+import com.revature.dto.AddOrEditCommentDTO;
+import com.revature.dto.EditFormStatusDTO;
+
 import com.revature.exception.BadParameterException;
 import com.revature.model.Form;
 
@@ -39,4 +43,45 @@ public class FormService {
 		Form form = formDao.editFormById(uId, fId, editFormDto);
 		return null;
 	}
+
+
+	public Form editFormStatusAdmin(String formId, EditFormStatusDTO formStatusDto) throws BadParameterException {
+		if (!formStatusDto.getStatus().equalsIgnoreCase("verified")) {
+			throw new BadParameterException("Not an acceptance form status");
+		}
+		try {
+			int fId = Integer.parseInt(formId);
+			Form form = formDao.editFormStatusAdmin(fId, formStatusDto);
+			return form;
+		} catch (NumberFormatException e) {
+			throw new BadParameterException("form id is not an integer");
+		}
+
+	}
+
+	public Form addComment(String formId, AddOrEditCommentDTO commentDto) throws BadParameterException {
+		if(commentDto.getContent().trim().equals("")) {
+			throw new BadParameterException("Comment cannot be blank");
+		}
+		try {
+			int fId = Integer.parseInt(formId);
+			Form form = formDao.addComment(fId, commentDto);
+			return form;
+		}catch(NumberFormatException e) {
+			throw new BadParameterException("Form id is not an valid integer");
+		}
+		
+	}
+	
+	public void deleteForm(String formId) throws BadParameterException {
+		try {
+			int fId = Integer.parseInt(formId);
+			formDao.deleteForm(fId);
+		} catch (NumberFormatException e) {
+			throw new BadParameterException("user id or form id is not an integer");
+		}
+
+	}
+
+
 }
