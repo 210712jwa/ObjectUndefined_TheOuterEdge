@@ -1,0 +1,74 @@
+package com.revature.dao;
+
+import java.util.List;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.revature.dto.AddFormDTO;
+import com.revature.dto.AddUserDTO;
+import com.revature.model.Form;
+import com.revature.model.FormStatus;
+import com.revature.model.Users;
+
+@Repository
+public class FormDAO {
+
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	@Transactional
+	public Form addForm(int userId, AddFormDTO addFormDto) {
+		Session session = sessionFactory.getCurrentSession();
+		Form form = new Form(addFormDto.getTitle(), addFormDto.getDescription(), addFormDto.getEventTime());
+		Users user = session.get(Users.class, 1);
+		FormStatus formStatus = session.get(FormStatus.class, 1);
+		form.setAuthor(user);
+		form.setFormStatus(formStatus);
+		session.persist(form);
+		return form;
+	}
+
+	@Transactional
+	public List<Form> getAllForm() {
+		Session session = sessionFactory.getCurrentSession();
+
+		List<Form> form = session.createQuery("FROM Form f").getResultList();
+
+		return form;
+	}
+	
+	public List<Form> getFormByTitle(String title) {
+		Session session = sessionFactory.getCurrentSession();
+		String formhql = "From Form f WHERE lower(title) like lower(:title)";
+		List<Form> form = session.createQuery(formhql).getResultList();
+		return form;
+		
+	}
+	
+	public Form editFormById(int userId, int formId, AddFormDTO formDto) {
+		Session session = sessionFactory.getCurrentSession();
+		String formHql = "FROM Form f WHERE f.id = :id";
+		Form form = (Form) session.createQuery(formHql).setParameter("id", formId).getSingleResult();
+		form.setTitle(formDto.getTitle());
+		form.setDescription(formDto.getDescription());
+		form.setImage(formDto.getImage());
+		form.setEventTime(formDto.getEventTime());
+		session.saveOrUpdate(form);
+		return form;
+	}
+	
+	public void deleteForm(int formId) {
+		Session session = sessionFactory.getCurrentSession();
+		int recordUpdate = session.createQuery("DELETE FROM FORM f WHERE f.id = :id").setParameter("id", formId).executeUpdate();
+		if(recordUpdate != 1) {
+			throw new HibernateException("Fail to delete form");
+		}
+	}
+	
+
+}

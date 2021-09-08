@@ -1,0 +1,66 @@
+package com.revature.controller;
+
+import javax.security.auth.login.LoginException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.revature.dto.LoginDTO;
+import com.revature.dto.MessageDTO;
+import com.revature.model.Users;
+import com.revature.service.LoginService;
+
+
+@RestController
+@CrossOrigin("http://localhost:4201")
+public class LoginController {
+	
+	@Autowired
+	private LoginService loginService;
+	
+	@Autowired
+	private HttpServletRequest request;
+	
+	@PostMapping(path = "/login", consumes = "application/json" )
+	public ResponseEntity<Object> login(@RequestBody LoginDTO loginDto) {
+		try {
+			Users user = this.loginService.login(loginDto.getUsername(), loginDto.getPassword());
+			
+			
+			HttpSession session = request.getSession(true);
+			
+			if (session.getAttribute("currentUser") != null) {
+				return ResponseEntity.status(400).body(new MessageDTO("You are already logged in!"));
+			}
+	
+			session.setAttribute("currentUser", user);
+
+			
+			return ResponseEntity.status(200).body(user);
+		} catch (LoginException e) {
+			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
+		}	
+	}
+	
+	@GetMapping(path = "/currentuser")
+	public ResponseEntity<Object> getCurrentUser() {
+		
+		HttpSession session = request.getSession(false);
+		
+		if (session == null || session.getAttribute("currentUser") == null) {
+			return ResponseEntity.status(400).body(new MessageDTO("You are not logged in!"));
+		}
+		
+		Users user = (Users) session.getAttribute("currentUser");
+		return ResponseEntity.status(200).body(user);	
+	}
+
+}
