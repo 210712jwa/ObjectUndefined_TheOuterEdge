@@ -94,7 +94,9 @@ public class FormDAO {
 	public Comment editComment(int commentId, AddOrEditCommentDTO commentDto) {
 		Session session = sessionFactory.getCurrentSession();
 		String commentHql = "FROM Comment c WHERE c.id = :id";
-		Comment comment = session.createQuery(commentHql)
+		Comment comment = (Comment) session.createQuery(commentHql).setParameter("id", commentId).getSingleResult();
+		session.saveOrUpdate(comment);
+		return comment;
 	}
 
 	@Transactional
