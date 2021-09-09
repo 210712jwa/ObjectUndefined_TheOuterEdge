@@ -2,13 +2,16 @@
 <div class="bg-dark">
   <div class="wrapper">
     <div class="jumbotron">
-      <h1 class="display-4">The Truth Is Out There</h1>
+      <h1 class="display-4">{{title}}</h1>
     </div>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-4">
           <h3>UFO Sightings: Fact or Fancy?<br><small>Ufologists Weigh In</small></h3>
         </div>
+        <app-form-table></app-form-table>
+        <app-filter-search></app-filter-search>
+        
         <div class="col-md-8">
           <p>
             Are we alone in the universe? For millennia, humans have turned to the sky to answer this question. Now,
@@ -30,9 +33,6 @@
         </div>
       </div>
     </div> 
-          <app-filter-search></app-filter-search>
-    <div><app-form-table></app-form-table>
-    </div>
-    
+
   </div>
 </div>

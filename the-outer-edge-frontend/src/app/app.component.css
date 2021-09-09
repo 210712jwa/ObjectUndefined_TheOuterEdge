@@ -5,7 +5,10 @@
     height: 100px;;
   }
 
-p, h1, h3, table{
+p, h1, table{
     color:aliceblue;
 }
 
+h3{
+  text-align: center;
+}
