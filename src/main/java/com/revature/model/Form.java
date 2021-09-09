@@ -3,6 +3,7 @@ package com.revature.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -71,7 +72,7 @@ public class Form {
 	@JoinColumn(name = "verify_staus", nullable = false)
 	private FormStatus formStatus;
 	
-	@OneToMany
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "comments")
 	private List<Comment> comments;
 	
