@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.dto.AddFormDTO;
 import com.revature.dto.AddOrEditCommentDTO;
-import com.revature.dto.AddUserDTO;
 import com.revature.dto.EditFormStatusDTO;
 import com.revature.model.Comment;
 import com.revature.model.Form;
@@ -89,6 +88,13 @@ public class FormDAO {
 		form.setComments(formCommentList);
 		session.saveOrUpdate(form);
 		return form;
+	}
+	
+	@Transactional
+	public Comment editComment(int commentId, AddOrEditCommentDTO commentDto) {
+		Session session = sessionFactory.getCurrentSession();
+		String commentHql = "FROM Comment c WHERE c.id = :id";
+		Comment comment = session.createQuery(commentHql)
 	}
 
 	@Transactional
