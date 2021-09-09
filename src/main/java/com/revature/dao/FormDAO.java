@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.revature.dto.AddFormDTO;
 import com.revature.dto.AddOrEditCommentDTO;
-import com.revature.dto.AddUserDTO;
 import com.revature.dto.EditFormStatusDTO;
 import com.revature.model.Comment;
 import com.revature.model.Form;
@@ -33,6 +32,14 @@ public class FormDAO {
 		form.setAuthor(user);
 		form.setFormStatus(formStatus);
 		session.persist(form);
+		return form;
+	}
+	
+	public Form addFormImage(int formId, byte[] storedimage) {
+		Session session = sessionFactory.getCurrentSession();
+		Form form = session.get(Form.class, formId);
+		form.setImage(storedimage);
+		session.saveOrUpdate(form);
 		return form;
 	}
 
@@ -79,22 +86,44 @@ public class FormDAO {
 	}
 	
 	@Transactional
-	public Form addComment(int formId, AddOrEditCommentDTO commentDto) {
+	public Form addComment(int userId, int formId, AddOrEditCommentDTO commentDto) {
 		Session session = sessionFactory.getCurrentSession();
 		String formHql = "FROM Form f WHERE f.id = :id";
 		Form form = (Form) session.createQuery(formHql).setParameter("id", formId).getSingleResult();
 		Comment comment = new Comment(commentDto.getContent());
+		Users user = session.get(Users.class, userId);
+		comment.setAuthor(user);
 		List<Comment> formCommentList = form.getComments();
 		formCommentList.add(comment);
 		form.setComments(formCommentList);
-		session.saveOrUpdate(form);
+		session.persist(form);
 		return form;
 	}
 
 	@Transactional
+	public Comment editComment(int commentId, AddOrEditCommentDTO commentDto) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "FROM Comment c WHERE c.id = :id";
+		Comment comment = (Comment) session.createQuery(hql).setParameter("id", commentId).getSingleResult();
+		comment.setContent(commentDto.getContent());
+		session.saveOrUpdate(comment);
+		return comment;
+	}
+	
+	@Transactional
+	public void deleteComment(int commentId) {
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "FROM Comment c WHERE c.id = :id";
+		int recordUpdate = session.createQuery(hql).setParameter("id", commentId).executeUpdate();
+		if(recordUpdate != 1) {
+			throw new HibernateException("Fail to delete comment");
+		}
+	}
+	
+	@Transactional
 	public void deleteForm(int formId) {
 		Session session = sessionFactory.getCurrentSession();
-		int recordUpdate = session.createQuery("DELETE FROM FORM f WHERE f.id = :id").setParameter("id", formId).executeUpdate();
+		int recordUpdate = session.createQuery("DELETE FROM Form f WHERE f.id = :id").setParameter("id", formId).executeUpdate();
 		if(recordUpdate != 1) {
 			throw new HibernateException("Fail to delete form");
 		}
