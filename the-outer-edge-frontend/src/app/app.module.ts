@@ -7,18 +7,22 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
 import { FormComponent } from './form/form.component';
 import { FormTableComponent } from './form-table/form-table.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthModule } from './auth/auth.module';
+import { LoginComponent } from './authComponents/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationBarComponent,
     FormComponent,
-    FormTableComponent
+    FormTableComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule, 
+    AuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]
