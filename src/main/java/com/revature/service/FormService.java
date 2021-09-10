@@ -43,16 +43,16 @@ public class FormService {
 	
 	public Form addImage(String formId, MultipartFile file) throws IOException, BadParameterException {
 		InputStream fileContent = file.getInputStream();
-		//file.getBytes();
-		byte[] receiptByte = new byte[(int) file.getSize()];
+		
+		byte[] fileByte = new byte[(int) file.getSize()];
 		int nRead;
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		try {
 			int reimbId = Integer.parseInt(formId);
-			while ((nRead = fileContent.read(receiptByte, 0, receiptByte.length)) != -1) {
-				buffer.write(receiptByte, 0, nRead);
+			while ((nRead = fileContent.read(fileByte, 0, fileByte.length)) != -1) {
+				buffer.write(fileByte, 0, nRead);
 			}
-			byte[] storeImageByte = buffer.toByteArray();
+			byte[] storeImageByte = buffer.toByteArray(); //file.getBytes();
 			Form form = formDao.addFormImage(reimbId, storeImageByte);
 			return form;
 		}catch(NumberFormatException e) {

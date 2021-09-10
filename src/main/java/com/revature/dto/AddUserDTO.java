@@ -24,6 +24,7 @@ public class AddUserDTO {
 	private String username;
 	
 	private String Password;
+	
 
 	public AddUserDTO(String firstName, String lastName, String email, String username, String password) {
 		super();
