@@ -8,11 +8,8 @@ import { FormComponent } from './form/form.component';
 import { FormTableComponent } from './form-table/form-table.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './auth/auth.module';
-<<<<<<< HEAD
 import { LoginComponent } from './authComponents/login/login.component';
-=======
 import { SharedModule } from './shared/shared.module';
->>>>>>> ff82ab9b (Add shared module, auth module)
 
 @NgModule({
   declarations: [
@@ -26,10 +23,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule, 
-<<<<<<< HEAD
-=======
     SharedModule,
->>>>>>> ff82ab9b (Add shared module, auth module)
     AuthModule
   ],
   providers: [],
