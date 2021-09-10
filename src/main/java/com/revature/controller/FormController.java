@@ -115,6 +115,7 @@ public class FormController {
 		}
 	}
 
+
 	@PatchMapping(path = "user/{userId}/form/{formId}/comment")
 	@UserProtected
 	public ResponseEntity<Object> addComment(@PathVariable String userId, @PathVariable String formId,
@@ -138,6 +139,7 @@ public class FormController {
 	@UserProtected
 	public ResponseEntity<Object> editComment(@PathVariable String userId, @PathVariable String commentId,
 			@RequestBody AddOrEditCommentDTO commentDTO) {
+
 		HttpSession session = request.getSession(false);
 		Users user = (Users) session.getAttribute("currentUser");
 		String currentUserId = Integer.toString(user.getId());
@@ -166,6 +168,7 @@ public class FormController {
 		} catch (BadParameterException e) {
 			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
 		}
+
 	}
 
 	@PatchMapping(path = "admin/{userId}/form/{formId}", consumes = "text/plain", produces = "application/json")

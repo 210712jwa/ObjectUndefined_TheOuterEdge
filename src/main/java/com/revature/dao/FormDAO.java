@@ -100,6 +100,15 @@ public class FormDAO {
 		session.persist(form);
 		return form;
 	}
+	
+	@Transactional
+	public Comment editComment(int commentId, AddOrEditCommentDTO commentDto) {
+		Session session = sessionFactory.getCurrentSession();
+		String commentHql = "FROM Comment c WHERE c.id = :id";
+		Comment comment = (Comment) session.createQuery(commentHql).setParameter("id", commentId).getSingleResult();
+		session.saveOrUpdate(comment);
+		return comment;
+	}
 
 	@Transactional
 	public Comment editComment(int commentId, AddOrEditCommentDTO commentDto) {
