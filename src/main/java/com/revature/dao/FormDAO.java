@@ -35,6 +35,7 @@ public class FormDAO {
 		return form;
 	}
 	
+	@Transactional
 	public Form addFormImage(int formId, byte[] storedimage) {
 		Session session = sessionFactory.getCurrentSession();
 		Form form = session.get(Form.class, formId);
@@ -47,7 +48,7 @@ public class FormDAO {
 	public List<Form> getAllForm() {
 		Session session = sessionFactory.getCurrentSession();
 
-		List<Form> form = session.createQuery("FROM Form f").getResultList();
+		List<Form> form = session.createQuery("FROM Form f ORDER BY f.submitted desc").getResultList();
 
 		return form;
 	}
@@ -55,8 +56,8 @@ public class FormDAO {
 	@Transactional
 	public List<Form> getFormByTitle(String title) {
 		Session session = sessionFactory.getCurrentSession();
-		String formhql = "From Form f WHERE lower(title) like lower(:title)";
-		List<Form> form = session.createQuery(formhql).getResultList();
+		String formhql = "From Form f WHERE lower(f.title) like lower(:title) ORDER BY f.submitted desc";
+		List<Form> form = session.createQuery(formhql).setParameter("title", "%" + title + "%").getResultList();
 		return form;	
 	}
 	
@@ -67,7 +68,7 @@ public class FormDAO {
 		Form form = (Form) session.createQuery(formHql).setParameter("id", formId).getSingleResult();
 		form.setTitle(formDto.getTitle());
 		form.setDescription(formDto.getDescription());
-		form.setImage(formDto.getImage());
+		//form.setImage(formDto.getImage());
 		form.setEventTime(formDto.getEventTime());
 		session.saveOrUpdate(form);
 		return form;
@@ -113,16 +114,22 @@ public class FormDAO {
 	@Transactional
 	public void deleteComment(int commentId) {
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "FROM Comment c WHERE c.id = :id";
+		String hql = "DELETE FROM Comment c WHERE c.id = :id";
 		int recordUpdate = session.createQuery(hql).setParameter("id", commentId).executeUpdate();
 		if(recordUpdate != 1) {
 			throw new HibernateException("Fail to delete comment");
 		}
 	}
 	
+	public void deleteAllCommentOfAForm(int formId) {
+		Session session = sessionFactory.getCurrentSession();
+		int recordUpdate = session.createSQLQuery("DELETE FROM comment WHERE comments = :formId").setParameter("formId", formId).executeUpdate();
+	}
+	
 	@Transactional
 	public void deleteForm(int formId) {
 		Session session = sessionFactory.getCurrentSession();
+		deleteAllCommentOfAForm(formId);
 		int recordUpdate = session.createQuery("DELETE FROM Form f WHERE f.id = :id").setParameter("id", formId).executeUpdate();
 		if(recordUpdate != 1) {
 			throw new HibernateException("Fail to delete form");

@@ -44,9 +44,13 @@ public class Users {
 	@Column(name = "username", unique = true, nullable = false, length = 50)
 	private String username;
 	
-	@Column(name = "password", nullable = false, length = 50)
+	@Column(name = "password", nullable = false)
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
+	
+	@Column(name = "password_hash", nullable = false)
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private byte[] salt;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_role", nullable = false)

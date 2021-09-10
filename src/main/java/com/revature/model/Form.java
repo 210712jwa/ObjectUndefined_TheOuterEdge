@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,6 +55,12 @@ public class Form {
 	@Lob
 	private byte[] image;
 	
+	@Column(name = "latitude")
+	private double latitude;
+	
+	@Column(name = " longitude")
+	private double longitude;
+	
 	@ManyToOne
 	@JoinColumn(name = "author", nullable = false)
 	private Users author;
@@ -72,7 +79,7 @@ public class Form {
 	@JoinColumn(name = "verify_staus", nullable = false)
 	private FormStatus formStatus;
 	
-	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "comments")
 	private List<Comment> comments;
 	

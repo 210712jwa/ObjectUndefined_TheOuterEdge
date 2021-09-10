@@ -1,5 +1,8 @@
 package com.revature.controller;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,7 +34,7 @@ public class LoginController {
 	private HttpServletRequest request;
 	
 	@PostMapping(path = "/login", consumes = "application/json" )
-	public ResponseEntity<Object> login(@RequestBody LoginDTO loginDto) {
+	public ResponseEntity<Object> login(@RequestBody LoginDTO loginDto) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		try {
 			Users user = this.loginService.login(loginDto);
 			

@@ -1,5 +1,8 @@
 package com.revature.service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import javax.security.auth.login.LoginException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,19 +12,22 @@ import com.revature.dao.UserDAO;
 import com.revature.dto.LoginDTO;
 import com.revature.exception.BadParameterException;
 import com.revature.model.Users;
+import com.revature.util.PasswordHashing;
 
 @Service
 public class LoginService {
 	
 	private UserDAO userDao;
 	
+
+	
 	@Autowired
 	public LoginService(UserDAO userDao) {
 		this.userDao = userDao;
 	}
 
-	public Users login(LoginDTO loginDto) throws LoginException, BadParameterException {
-		
+	public Users login(LoginDTO loginDto) throws LoginException, BadParameterException, NoSuchAlgorithmException, InvalidKeySpecException {
+	
 		if (loginDto.getUsername().equals("") && loginDto.getPassword().equals("")) {
 			throw new BadParameterException("Username and password cannot be blank.");
 		}
