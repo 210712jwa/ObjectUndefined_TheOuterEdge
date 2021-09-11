@@ -9,3 +9,6 @@ p, h1, h3, table{
     color:aliceblue;
 }
 
+body {
+  background-color: black;
+}
