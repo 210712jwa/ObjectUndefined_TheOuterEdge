@@ -1,5 +1,8 @@
 package com.revature.controller;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,7 +24,7 @@ import com.revature.service.LoginService;
 
 
 @RestController
-@CrossOrigin("http://localhost:4201")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class LoginController {
 	
 	@Autowired
@@ -31,7 +34,7 @@ public class LoginController {
 	private HttpServletRequest request;
 	
 	@PostMapping(path = "/login", consumes = "application/json" )
-	public ResponseEntity<Object> login(@RequestBody LoginDTO loginDto) {
+	public ResponseEntity<Object> login(@RequestBody LoginDTO loginDto) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		try {
 			Users user = this.loginService.login(loginDto);
 			
@@ -73,6 +76,7 @@ public class LoginController {
 		if (session == null || session.getAttribute("currentUser") == null) {
 			return ResponseEntity.status(400).body(new MessageDTO("You are not logged in!"));
 		}
+		session.setAttribute("currentUser", null);
 		return ResponseEntity.status(200).body(new MessageDTO("Successfully logged out"));
 	}
 		
