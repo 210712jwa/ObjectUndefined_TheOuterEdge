@@ -26,7 +26,8 @@ public class FormDAO {
 	@Transactional
 	public Form addForm(int userId, AddFormDTO addFormDto) {
 		Session session = sessionFactory.getCurrentSession();
-		Form form = new Form(addFormDto.getTitle(), addFormDto.getDescription(), addFormDto.getEventTime());
+		Form form = new Form(addFormDto.getTitle(), addFormDto.getDescription());
+		
 		Users user = session.get(Users.class, 1);
 		FormStatus formStatus = session.get(FormStatus.class, 1);
 		form.setAuthor(user);
@@ -110,16 +111,7 @@ public class FormDAO {
 		return comment;
 	}
 
-	@Transactional
-	public Comment editComment(int commentId, AddOrEditCommentDTO commentDto) {
-		Session session = sessionFactory.getCurrentSession();
-		String hql = "FROM Comment c WHERE c.id = :id";
-		Comment comment = (Comment) session.createQuery(hql).setParameter("id", commentId).getSingleResult();
-		comment.setContent(commentDto.getContent());
-		session.saveOrUpdate(comment);
-		return comment;
-	}
-	
+
 	@Transactional
 	public void deleteComment(int commentId) {
 		Session session = sessionFactory.getCurrentSession();

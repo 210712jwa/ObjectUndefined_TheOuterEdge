@@ -8,7 +8,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @MultipartConfig
-@EnableWebMvc
+//@EnableWebMvc
 public class FileUploadConfig {
 	@Bean(name = "multipartResolver")
 	public CommonsMultipartResolver multi(){
