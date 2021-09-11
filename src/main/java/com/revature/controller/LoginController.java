@@ -24,7 +24,7 @@ import com.revature.service.LoginService;
 
 
 @RestController
-@CrossOrigin("http://localhost:4201")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class LoginController {
 	
 	@Autowired
@@ -76,6 +76,7 @@ public class LoginController {
 		if (session == null || session.getAttribute("currentUser") == null) {
 			return ResponseEntity.status(400).body(new MessageDTO("You are not logged in!"));
 		}
+		session.setAttribute("currentUser", null);
 		return ResponseEntity.status(200).body(new MessageDTO("Successfully logged out"));
 	}
 		

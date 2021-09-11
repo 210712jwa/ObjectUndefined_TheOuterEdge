@@ -17,7 +17,7 @@ import com.revature.model.Users;
 import com.revature.service.UserService;
 
 @RestController
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class UserController {
 	
 	@Autowired

@@ -92,12 +92,15 @@ public class Form {
 	@JsonIgnore
 	private Timestamp submitTimestamp = new Timestamp(now);
 
-	public Form(String title, String description, Timestamp eventTime) {
+	public Form(String title, String description) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.submitted = submitTimestamp;
-		this.eventTime = eventTime;
 	}
+
+
+
+	
 	
 }

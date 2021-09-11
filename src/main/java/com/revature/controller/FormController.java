@@ -33,7 +33,7 @@ import com.revature.model.Users;
 import com.revature.service.FormService;
 
 @RestController
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class FormController {
 
 	@Autowired
