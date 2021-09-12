@@ -12,6 +12,7 @@ import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
+import { PostDisplayComponent } from './post-display/post-display.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FormsModule } from '@angular/forms';
     InfoComponent,
     NavComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    PostDisplayComponent
   ],
   imports: [
     BrowserModule,
