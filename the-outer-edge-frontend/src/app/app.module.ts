@@ -12,11 +12,15 @@ import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
+
+import { PostDisplayComponent } from './post-display/post-display.component';
+
 import { AdminComponent } from './admin/admin.component';
 import { HeaderComponent } from './admin/header/header.component';
 import { ButtonComponent } from './button/button.component';
 import { FormItemComponent } from './form-item/form-item.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 
 @NgModule({
@@ -29,10 +33,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     NavComponent,
     HomeComponent,
     LoginComponent,
+
+    PostDisplayComponent
+
     AdminComponent,
     HeaderComponent,
     ButtonComponent,
     FormItemComponent
+
   ],
   imports: [
     BrowserModule,

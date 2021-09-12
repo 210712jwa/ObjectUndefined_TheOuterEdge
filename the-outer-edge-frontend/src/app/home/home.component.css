@@ -1,19 +1,19 @@
 
 html { overflow-x: hidden; }
 
-body {
+.body {
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 19px;
     line-height: 2em;
     overflow-x: hidden;
-    color: black
+    background-color: black;
 }
 
 p, span { color: #999; }
 hr { 
-    border-top-color: #CCC; 
+    border-top-color: rgb(0, 0, 0); 
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -44,9 +44,8 @@ hr {
 .tm-main {
     margin-left: 20px;
     padding: 50px 100px 25px;
+    background-color: rgb(37, 37, 37);
 }
-
-
 
 /* CSS of Posts */
 .tm-post-link {
