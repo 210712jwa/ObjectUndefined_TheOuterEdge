@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormApprovalService } from '../services/form-approval.service';
+import { Form } from '../Form';
 
 @Component({
   selector: 'app-form',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FormComponent implements OnInit {
 
-  constructor() { }
+  forms: Form[] = [];
+
+  constructor(private formApprovalService: FormApprovalService) { }
 
   ngOnInit(): void {
+    this.formApprovalService.getForms().subscribe((forms) => (this.forms = forms));
+  }
+
+  deleteForm(form: Form) {
+    this.formApprovalService.deleteForm(form).subscribe(
+      () => (this.forms = this.forms.filter(f => f.id !== form.id)));
   }
 
 }
