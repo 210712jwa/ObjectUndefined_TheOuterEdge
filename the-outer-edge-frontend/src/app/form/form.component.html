@@ -1,1 +1,7 @@
-<p>form works!</p>
+<app-form-item 
+    *ngFor="let form of forms" 
+    [form]="form"
+    (onDeleteForm)="deleteForm(form)"
+>
+</app-form-item>
+

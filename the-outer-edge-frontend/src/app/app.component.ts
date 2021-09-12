@@ -20,7 +20,7 @@ export class AppComponent {
   formComponentShouldBeDisplayed: boolean = true;
 
   ngOnInit(){
-    this.getForm;
+    this.getForm();
   }
 
   getForm(){
