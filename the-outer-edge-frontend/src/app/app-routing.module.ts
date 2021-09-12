@@ -12,7 +12,7 @@ const routes: Routes = [
 
 
 
-  {path: 'admin', component:AdminComponent}
+  {path: 'admin', component:AdminComponent},
 
 
   {path: 'postDisplay', component:PostDisplayComponent}
