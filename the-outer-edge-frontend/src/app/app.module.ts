@@ -34,7 +34,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HomeComponent,
     LoginComponent,
 
-    PostDisplayComponent
+    PostDisplayComponent,
 
     AdminComponent,
     HeaderComponent,
