@@ -1,0 +1,12 @@
+<div class="form">
+    <h3> 
+        {{form.title}}
+        <fa-icon 
+            (click)="onDelete(form)"
+            [icon]="faTimes"
+            [ngStyle]="{'color': 'red'}"
+        >
+        </fa-icon>
+    </h3>
+    <p>{{form.description}}</p>
+</div>
