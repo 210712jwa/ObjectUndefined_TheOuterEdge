@@ -24,7 +24,7 @@ public class ORMConfig {
 		
 		dataSource.setDriverClassName("org.mariadb.jdbc.Driver");
 		
-		dataSource.setUrl("jdbc:mariadb://database-1.cn1miykkkwdu.us-east-2.rds.amazonaws.com:3306/p2");
+		dataSource.setUrl(System.getenv("db_url"));
 		dataSource.setUsername(System.getenv("db_username"));
 		dataSource.setPassword(System.getenv("db_password"));
 		

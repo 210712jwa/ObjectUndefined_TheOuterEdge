@@ -33,7 +33,7 @@ import com.revature.model.Users;
 import com.revature.service.FormService;
 
 @RestController
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class FormController {
 
 	@Autowired
@@ -65,15 +65,21 @@ public class FormController {
 	}
 
 	@GetMapping(path = "/form", produces = "application/json")
-	public ResponseEntity<Object> getForm() {
-		List<Form> form = formService.getAllForm();
-		return ResponseEntity.status(200).body(form);
+	public ResponseEntity<Object> getForm(@RequestParam String search) throws BadParameterException {
+		if (!search.trim().equals("")) {
+			List<Form> form = formService.getFormByTitle(search);
+			return ResponseEntity.status(200).body(form);
+		} else {
+			List<Form> form = formService.getAllForm();
+			return ResponseEntity.status(200).body(form);
+		}
 
 	}
-	
+
 	@PatchMapping(path = "user/{userId}/form/{formId}/upload")
 	@UserProtected
-	public ResponseEntity<Object> addImage(@PathVariable String userId, @PathVariable String formId, @RequestParam("file") MultipartFile file) {
+	public ResponseEntity<Object> addImage(@PathVariable String userId, @PathVariable String formId,
+			@RequestParam("file") MultipartFile file) {
 		HttpSession session = request.getSession(false);
 		Users user = (Users) session.getAttribute("currentUser");
 		String currentUserId = Integer.toString(user.getId());
@@ -83,9 +89,9 @@ public class FormController {
 		try {
 			Form form = formService.addImage(formId, file);
 			return ResponseEntity.status(200).body(form);
-		}catch(BadParameterException e) {
+		} catch (BadParameterException e) {
 			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
-		}catch(IOException e) {
+		} catch (IOException e) {
 			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
 		}
 	}
@@ -111,6 +117,7 @@ public class FormController {
 
 
 	@PatchMapping(path = "user/{userId}/form/{formId}/comment")
+	@UserProtected
 	public ResponseEntity<Object> addComment(@PathVariable String userId, @PathVariable String formId,
 			@RequestBody AddOrEditCommentDTO commentDTO) {
 		HttpSession session = request.getSession(false);
@@ -127,22 +134,40 @@ public class FormController {
 		}
 
 	}
-	
+
 	@PatchMapping(path = "user/{userId}/form/{formId}/comment/{commentId}")
+	@UserProtected
 	public ResponseEntity<Object> editComment(@PathVariable String userId, @PathVariable String commentId,
 			@RequestBody AddOrEditCommentDTO commentDTO) {
-			HttpSession session = request.getSession(false);
-			Users user = (Users) session.getAttribute("currentUser");
-			String currentUserId = Integer.toString(user.getId());
-			if (!userId.equals(currentUserId)) {
-				return ResponseEntity.status(401).body(new MessageDTO("unauthorized action."));
-			}
-			try {
-				Comment comment = formService.editComment(commentId, commentDTO);
-				return ResponseEntity.status(200).body(comment);
-			}catch(BadParameterException e) {
-				return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
-			}
+
+		HttpSession session = request.getSession(false);
+		Users user = (Users) session.getAttribute("currentUser");
+		String currentUserId = Integer.toString(user.getId());
+		if (!userId.equals(currentUserId)) {
+			return ResponseEntity.status(401).body(new MessageDTO("unauthorized action."));
+		}
+		try {
+			Comment comment = formService.editComment(commentId, commentDTO);
+			return ResponseEntity.status(200).body(comment);
+		} catch (BadParameterException e) {
+			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
+		}
+	}
+
+	@DeleteMapping(path = "user/{userId}/form/{formId}/comment/{commentId}")
+	public ResponseEntity<Object> editComment(@PathVariable String userId, @PathVariable String commentId) {
+		HttpSession session = request.getSession(false);
+		Users user = (Users) session.getAttribute("currentUser");
+		String currentUserId = Integer.toString(user.getId());
+		if (!userId.equals(currentUserId)) {
+			return ResponseEntity.status(401).body(new MessageDTO("unauthorized action."));
+		}
+		try {
+			formService.deleteComment(commentId);
+			return ResponseEntity.status(200).body(new MessageDTO("Delete comment successfully"));
+		} catch (BadParameterException e) {
+			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
+		}
 
 	}
 
@@ -169,6 +194,17 @@ public class FormController {
 				return ResponseEntity.status(401).body(new MessageDTO("unauthorized action."));
 			}
 			formService.deleteForm(formId);
+			return ResponseEntity.status(200).body(new MessageDTO("Delete successfully"));
+		} catch (BadParameterException e) {
+			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
+		}
+	}
+
+	@DeleteMapping(path = "admin/{userId}/form/{formId}/comment/{commentId}")
+	@AdminProtected
+	public ResponseEntity<Object> deleteCommentAdmin(@PathVariable String commentId) {
+		try {
+			formService.deleteForm(commentId);
 			return ResponseEntity.status(200).body(new MessageDTO("Delete successfully"));
 		} catch (BadParameterException e) {
 			return ResponseEntity.status(400).body(new MessageDTO(e.getMessage()));
