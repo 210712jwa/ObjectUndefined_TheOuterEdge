@@ -1,4 +1,6 @@
+<app-nav></app-nav>
 <body>
+    
 <div class="container-fluid">
     <main class="tm-main">
    <!-- Search form -->
@@ -7,10 +9,44 @@
     </div>                
 </div> 
 <div>
-<button (click)="login()">button</button>
+<button (click)="login()">login</button>
+<button (click)="getForm()">button</button>
 </div>           
 <div class="row tm-row">
-    <article class="col-12 col-md-6 tm-post">
+    <ng-container *ngFor="let form of allForm">
+        <article class="col-12 col-md-6 tm-post">
+            <hr class="tm-hr-primary">
+            <a href="post.html" class="effect-lily tm-post-link tm-pt-60">
+        
+            <div class="tm-post-link-inner" *ngIf="form.image !== null;else display white">
+                <img class="img-responsive" src="data:image/png;base64,{{form.image }}">                              
+            </div> 
+            <ng-template #display white>
+                <div class="tm-post-link-inner">
+                <img class="img-responsive" src="assets/img/white.png"> 
+            </div>
+            </ng-template>
+            <span class="position-absolute tm-new-badge">{{ form.formStatus.formStatus }}</span>
+            <h2 class="tm-pt-30 tm-color-primary tm-post-title">{{ form.title }}</h2>
+            </a>
+            <p class="tm-pt-30">
+                {{ form.description }}
+            </p>
+
+           <!--  <div class="d-flex justify-content-between tm-pt-45">
+                <span class="tm-color-primary">{{ form.submitted }}</span>
+            </div> -->
+
+            <hr>
+        <div class="d-flex justify-content-between">
+            <span></span>
+         <span>by {{ form.author.firstName }}</span>
+        </div>
+    </article>
+    
+    </ng-container>
+    </div>
+    <!-- <article class="col-12 col-md-6 tm-post">
         <hr class="tm-hr-primary">
         <a href="post.html" class="effect-lily tm-post-link tm-pt-60">
             <div class="tm-post-link-inner">
@@ -151,7 +187,7 @@
     <div class="tm-prev-next-wrapper">
         <a href="#" class="mb-2 tm-btn tm-btn-primary tm-prev-next disabled tm-mr-20">Prev</a>
         <a href="#" class="mb-2 tm-btn tm-btn-primary tm-prev-next">Next</a>
-    </div>
+    </div> -->
     <div class="tm-paging-wrapper">
         <span class="d-inline-block mr-3">Page</span>
         <nav class="tm-paging-nav d-inline-block">
@@ -171,7 +207,7 @@
             </ul>
         </nav>
     </div>                
-</div>            
+             
 <footer class="row tm-row">
     <hr class="col-12">
     <div class="col-md-6 col-12 tm-color-gray">

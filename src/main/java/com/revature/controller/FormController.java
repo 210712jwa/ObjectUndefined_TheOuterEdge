@@ -65,14 +65,14 @@ public class FormController {
 	}
 
 	@GetMapping(path = "/form", produces = "application/json")
-	public ResponseEntity<Object> getForm(@RequestParam String search) throws BadParameterException {
-		if (!search.trim().equals("")) {
-			List<Form> form = formService.getFormByTitle(search);
-			return ResponseEntity.status(200).body(form);
-		} else {
+	public ResponseEntity<Object> getForm() throws BadParameterException {
+//		if (!search.trim().equals("")) {
+//			List<Form> form = formService.getFormByTitle(search);
+//			return ResponseEntity.status(200).body(form);
+//		} else {
 			List<Form> form = formService.getAllForm();
 			return ResponseEntity.status(200).body(form);
-		}
+//		}
 
 	}
 
@@ -155,7 +155,8 @@ public class FormController {
 	}
 
 	@DeleteMapping(path = "user/{userId}/form/{formId}/comment/{commentId}")
-	public ResponseEntity<Object> editComment(@PathVariable String userId, @PathVariable String commentId) {
+	@UserProtected
+	public ResponseEntity<Object> deleteComment(@PathVariable String userId, @PathVariable String commentId) {
 		HttpSession session = request.getSession(false);
 		Users user = (Users) session.getAttribute("currentUser");
 		String currentUserId = Integer.toString(user.getId());
@@ -170,6 +171,7 @@ public class FormController {
 		}
 
 	}
+
 
 	@PatchMapping(path = "admin/{userId}/form/{formId}", consumes = "text/plain", produces = "application/json")
 	@AdminProtected
