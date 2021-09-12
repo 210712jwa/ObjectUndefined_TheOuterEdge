@@ -1,5 +1,8 @@
 package com.revature.service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +10,7 @@ import com.revature.dao.UserDAO;
 import com.revature.dto.AddUserDTO;
 import com.revature.exception.BadParameterException;
 import com.revature.model.Users;
+import com.revature.util.PasswordHashing;
 
 @Service
 public class UserService {
@@ -14,11 +18,14 @@ public class UserService {
 	private UserDAO userDao;
 	
 	@Autowired
+	private PasswordHashing passwordHash;
+	
+	@Autowired
 	public UserService(UserDAO userDao) {
 		this.userDao = userDao;
 	}
 	
-	public Users addUser(AddUserDTO addUserDto) throws BadParameterException {
+	public Users addUser(AddUserDTO addUserDto) throws BadParameterException, NoSuchAlgorithmException, InvalidKeySpecException {
 		if(addUserDto.getFirstName().trim().equals("") || addUserDto.getLastName().trim().equals("")) {
 			throw new BadParameterException("Name cannot be blank");
 		}
@@ -34,7 +41,12 @@ public class UserService {
 		if(addUserDto.getPassword().trim().equals("")) {
 			throw new BadParameterException("Password cannot be blank");
 		}
-		Users user = userDao.addUser(addUserDto);
+		
+		byte[] userSalt = passwordHash.getSalt();
+		String hashedPassword = passwordHash.generateStorngPasswordHash(addUserDto.getPassword(), userSalt);
+		
+		addUserDto.setPassword(hashedPassword);
+		Users user = userDao.addUser(addUserDto, userSalt);
 		return user;
 	}
 

@@ -1,15 +1,20 @@
 package com.revature.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.revature.dao.FormDAO;
 import com.revature.dto.AddFormDTO;
 import com.revature.dto.AddOrEditCommentDTO;
 import com.revature.dto.EditFormStatusDTO;
 import com.revature.exception.BadParameterException;
+import com.revature.model.Comment;
 import com.revature.model.Form;
 
 @Service
@@ -34,6 +39,25 @@ public class FormService {
 			throw new BadParameterException("User id is not an integer");
 		}
 
+	}
+	
+	public Form addImage(String formId, MultipartFile file) throws IOException, BadParameterException {
+		InputStream fileContent = file.getInputStream();
+		
+		byte[] fileByte = new byte[(int) file.getSize()];
+		int nRead;
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		try {
+			int reimbId = Integer.parseInt(formId);
+			while ((nRead = fileContent.read(fileByte, 0, fileByte.length)) != -1) {
+				buffer.write(fileByte, 0, nRead);
+			}
+			byte[] storeImageByte = buffer.toByteArray(); //file.getBytes();
+			Form form = formDao.addFormImage(reimbId, storeImageByte);
+			return form;
+		}catch(NumberFormatException e) {
+			throw new BadParameterException("Form id is not valid integer");
+		}
 	}
 
 	public List<Form> getAllForm() {
@@ -76,18 +100,41 @@ public class FormService {
 
 	}
 
-	public Form addComment(String formId, AddOrEditCommentDTO commentDto) throws BadParameterException {
+	public Form addComment(String userId, String formId, AddOrEditCommentDTO commentDto) throws BadParameterException {
 		if(commentDto.getContent().trim().equals("")) {
 			throw new BadParameterException("Comment cannot be blank");
 		}
 		try {
+			int uId = Integer.parseInt(userId);
 			int fId = Integer.parseInt(formId);
-			Form form = formDao.addComment(fId, commentDto);
+			Form form = formDao.addComment(uId,fId, commentDto);
 			return form;
 		}catch(NumberFormatException e) {
 			throw new BadParameterException("Form id is not an valid integer");
 		}
 		
+	}
+	
+	public Comment editComment(String commentId, AddOrEditCommentDTO commentDto) throws BadParameterException {
+		if(commentDto.getContent().trim().equals("")) {
+			throw new BadParameterException("Comment cannot be blank");
+		}
+		try {
+			int cId= Integer.parseInt(commentId);
+			Comment comment = formDao.editComment(cId, commentDto);
+			return comment;
+		}catch(NumberFormatException e) {
+			throw new BadParameterException("Comment id is not an valid integer");
+		}
+	}
+	
+	public void deleteComment(String commentId) throws BadParameterException {
+		try {
+			int cId= Integer.parseInt(commentId);
+			formDao.deleteComment(cId);
+		}catch(NumberFormatException e) {
+			throw new BadParameterException("Comment id is not an valid integer");
+		}
 	}
 	
 	public void deleteForm(String formId) throws BadParameterException {

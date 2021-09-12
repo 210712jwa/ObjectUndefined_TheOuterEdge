@@ -14,7 +14,6 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
-
 	<!-- This is where we configure our DispatcherServlet (which comes from 
 		Spring Web) -->
 	<!-- The DispatcherServlet is the sole Servlet that receives HTTP requests 
@@ -29,6 +28,7 @@
 			<param-value>/WEB-INF/applicationContext.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<multipart-config/>
 	</servlet>
 
 	<servlet-mapping>

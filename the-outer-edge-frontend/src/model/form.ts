@@ -1,5 +1,7 @@
 import { Users } from './user';
 import { FormStatus } from './form-status';
+import{ Comment } from './comment'
+
 
 export interface Form {
     id: number,
@@ -7,10 +9,13 @@ export interface Form {
     description: string,
     submitted: string,
     eventTime: string,
-    image: string,
+    image: any,
+    latitude: number,
+    longitude: number,
     author:Users,
-    like:number,
-    dislike:number,
+    likes:number,
+    dislikes:number,
     verifier: Users,
+    comments: Comment[],
     formStatus: FormStatus
 }

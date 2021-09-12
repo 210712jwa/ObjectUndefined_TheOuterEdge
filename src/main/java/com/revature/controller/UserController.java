@@ -1,5 +1,8 @@
 package com.revature.controller;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,7 +17,7 @@ import com.revature.model.Users;
 import com.revature.service.UserService;
 
 @RestController
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class UserController {
 	
 	@Autowired
@@ -25,7 +28,7 @@ public class UserController {
 	}
 	
 	@PostMapping(path = "/addUser", consumes = "application/json" )
-	public ResponseEntity<Object> addUser(@RequestBody AddUserDTO addUserDTO) throws BadParameterException {
+	public ResponseEntity<Object> addUser(@RequestBody AddUserDTO addUserDTO) throws BadParameterException, NoSuchAlgorithmException, InvalidKeySpecException {
 		try {
 			Users user = userService.addUser(addUserDTO);
 			return ResponseEntity.status(201).body(user);

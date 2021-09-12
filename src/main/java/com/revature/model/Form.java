@@ -3,8 +3,10 @@ package com.revature.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -53,6 +55,12 @@ public class Form {
 	@Lob
 	private byte[] image;
 	
+	@Column(name = "latitude")
+	private double latitude;
+	
+	@Column(name = " longitude")
+	private double longitude;
+	
 	@ManyToOne
 	@JoinColumn(name = "author", nullable = false)
 	private Users author;
@@ -71,7 +79,7 @@ public class Form {
 	@JoinColumn(name = "verify_staus", nullable = false)
 	private FormStatus formStatus;
 	
-	@OneToMany
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "comments")
 	private List<Comment> comments;
 	
@@ -84,12 +92,15 @@ public class Form {
 	@JsonIgnore
 	private Timestamp submitTimestamp = new Timestamp(now);
 
-	public Form(String title, String description, Timestamp eventTime) {
+	public Form(String title, String description) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.submitted = submitTimestamp;
-		this.eventTime = eventTime;
 	}
+
+
+
+	
 	
 }

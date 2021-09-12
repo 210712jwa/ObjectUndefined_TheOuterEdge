@@ -12,6 +12,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
 @EnableTransactionManagement
@@ -26,6 +27,7 @@ public class ORMConfig {
 		dataSource.setUrl(System.getenv("db_url"));
 		dataSource.setUsername(System.getenv("db_username"));
 		dataSource.setPassword(System.getenv("db_password"));
+		
 		
 		return dataSource;
 	}
@@ -54,5 +56,7 @@ public class ORMConfig {
 		
 		return transactionManager;
 	}
+	
+
 	
 }
