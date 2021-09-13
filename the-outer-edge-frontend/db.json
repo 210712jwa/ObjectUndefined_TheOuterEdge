@@ -13,7 +13,7 @@
       "likes": 2,
       "dislikes": 2,
       "verifier": "Rob",
-      "formStatus": true,
+      "formStatus": "approved",
       "comments": "Wowzers"
     },
     {
@@ -29,7 +29,7 @@
       "likes": 2,
       "dislikes": 2,
       "verifier": "Rob",
-      "formStatus": true,
+      "formStatus": "approved",
       "comments": "Wowzers"
     },
     {
@@ -45,7 +45,7 @@
       "likes": 2,
       "dislikes": 2,
       "verifier": "Rob",
-      "formStatus": false,
+      "formStatus": "pending",
       "comments": "Wowzers"
     }
   ]

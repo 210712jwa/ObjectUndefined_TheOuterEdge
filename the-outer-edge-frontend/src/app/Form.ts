@@ -13,6 +13,6 @@ export interface Form {
     likes: number,
     dislikes: number,
     verifier: string, 
-    formStatus: boolean,
+    formStatus: string,
     comments: string
 }

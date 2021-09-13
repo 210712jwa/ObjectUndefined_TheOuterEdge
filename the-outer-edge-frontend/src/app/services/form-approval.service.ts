@@ -3,6 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Form } from '../Form';
 
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  }),
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,5 +24,10 @@ export class FormApprovalService {
   deleteForm(form: Form): Observable<Form> {
     const url = `${this.apiUrl}/${form.id}`;
     return this.http.delete<Form>(url);
+  }
+
+  updateFormApproved(form: Form): Observable<Form> {
+    const url = `${this.apiUrl}/${form.id}`;
+    return this.http.put<Form>(url, form, httpOptions);
   }
 }

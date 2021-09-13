@@ -18,8 +18,19 @@ export class FormComponent implements OnInit {
   }
 
   deleteForm(form: Form) {
-    this.formApprovalService.deleteForm(form).subscribe(
+    this.formApprovalService
+    .deleteForm(form)
+    .subscribe(
       () => (this.forms = this.forms.filter(f => f.id !== form.id)));
   }
+
+  approveForm(form: Form) {
+    form.formStatus = "approved";
+
+    this.formApprovalService.updateFormApproved(form).subscribe(
+      () => (this.forms)
+    )
+  }
+
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Form } from '../Form';
 
 @Component({
   selector: 'app-admin',
@@ -10,6 +11,13 @@ export class AdminComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  isPending(form: Form) {
+    if (form.formStatus === "pending") {
+      return true;
+    }
+    else return false;
   }
 
 }

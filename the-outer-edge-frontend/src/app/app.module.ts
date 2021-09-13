@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
@@ -20,6 +21,9 @@ import { HeaderComponent } from './admin/header/header.component';
 import { ButtonComponent } from './button/button.component';
 import { FormItemComponent } from './form-item/form-item.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MapComponent } from './map/map.component';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { AgmCoreModule } from '@agm/core';
 
 
 
@@ -39,7 +43,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AdminComponent,
     HeaderComponent,
     ButtonComponent,
-    FormItemComponent
+    FormItemComponent,
+    MapComponent
 
   ],
   imports: [
@@ -47,7 +52,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    FontAwesomeModule
+    FontAwesomeModule, 
+    GoogleMapsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBCPZrxuDsXEywBRVRzOR8cCAfwmS0nPwk',
+      libraries: ['places']
+    })
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
