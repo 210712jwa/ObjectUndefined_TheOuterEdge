@@ -26,14 +26,11 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['login'])
   }
 
-  print(){
-    console.log(this.allForm);
-  }
-
   getForm(){
+    console.log(1);
     this.formService.getForms().subscribe((data) => {
       this.allForm = data;
-      console.log(this.allForm);
+      console.log(data);
     },
     (err: HttpErrorResponse) => {
       //this.showErrorMessage = true;

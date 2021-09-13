@@ -50,7 +50,8 @@ public class FormController {
 	@UserProtected
 	public ResponseEntity<Object> addForm(@PathVariable String userId, @RequestBody AddFormDTO addFormDTO) {
 		try {
-
+			System.out.println(userId);
+			System.out.println(addFormDTO.getTitle());
 			HttpSession session = request.getSession(false);
 			Users user = (Users) session.getAttribute("currentUser");
 			String currentUserId = Integer.toString(user.getId());
@@ -75,8 +76,10 @@ public class FormController {
 //		}
 
 	}
+	
 
-	@PatchMapping(path = "user/{userId}/form/{formId}/upload")
+
+	@PatchMapping(path = "user/{userId}/form/{formId}/upload", consumes = "multipart/form-data")
 	@UserProtected
 	public ResponseEntity<Object> addImage(@PathVariable String userId, @PathVariable String formId,
 			@RequestParam("file") MultipartFile file) {

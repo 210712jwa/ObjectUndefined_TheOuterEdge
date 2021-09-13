@@ -20,17 +20,16 @@ export class AppComponent {
   formComponentShouldBeDisplayed: boolean = true;
 
   ngOnInit(){
-    this.getForm();
+   // this.getForm();
   }
 
-  getForm(){
+ /*  getForm(){
     this.formService.getForms().subscribe((data) => {
       this.forms = data;
-      console.log(data);
     },
     (err: HttpErrorResponse) => {
-      this.showErrorMessage = true;
-      this.errorMessage = err.error.message;
-    });
-  }
+/*       this.showErrorMessage = true;
+      this.errorMessage = err.error.message; */
+ /*    });
+  } */
 }

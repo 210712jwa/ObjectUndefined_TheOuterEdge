@@ -7,7 +7,7 @@ export interface Form {
     id: number,
     title: string,
     description: string,
-    submitted: string,
+    submitted: any,
     eventTime: string,
     image: any,
     latitude: number,
@@ -17,5 +17,5 @@ export interface Form {
     dislikes:number,
     verifier: Users,
     comments: Comment[],
-    formStatus: FormStatus
+    formStatus: FormStatus,
 }

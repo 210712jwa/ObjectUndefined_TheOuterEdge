@@ -20,6 +20,7 @@ import { HeaderComponent } from './admin/header/header.component';
 import { ButtonComponent } from './button/button.component';
 import { FormItemComponent } from './form-item/form-item.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PostFormComponent } from './post-form/post-form.component';
 
 
 
@@ -39,7 +40,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AdminComponent,
     HeaderComponent,
     ButtonComponent,
-    FormItemComponent
+    FormItemComponent,
+    PostFormComponent
 
   ],
   imports: [
