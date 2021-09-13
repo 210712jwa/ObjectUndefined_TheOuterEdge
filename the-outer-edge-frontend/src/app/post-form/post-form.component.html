@@ -1,0 +1,20 @@
+<app-nav></app-nav>
+<div class="container">
+<div class="mb-3">
+    <label for="titleFormControlInput1" class="form-label">Title</label>
+    <input type="email" class="form-control" id="descriptionFormControlInput1" [(ngModel)] = "title" placeholder="name@example.com">
+  </div>
+  <div class="mb-3">
+    <label for="descriptionFormControlTextarea1" class="form-label">Description</label>
+    <textarea class="form-control" id="descriptionFormControlTextarea1" [(ngModel)] = "description" rows="3"></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label for="formFile" class="form-label">Image</label>
+    <input class="form-control" type="file" id="formFile" [(ngModel)]= "image">
+  </div>
+
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3" (click)= "postWithImage()">Confirm identity</button>
+  </div>
+
