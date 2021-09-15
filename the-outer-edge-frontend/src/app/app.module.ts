@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 
 import { PostDisplayComponent } from './post-display/post-display.component';
 
+import { GoogleMapsModule } from '@angular/google-maps'
 import { AdminComponent } from './admin/admin.component';
 import { HeaderComponent } from './admin/header/header.component';
 import { ButtonComponent } from './button/button.component';
@@ -49,7 +50,8 @@ import { PostFormComponent } from './post-form/post-form.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    GoogleMapsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
