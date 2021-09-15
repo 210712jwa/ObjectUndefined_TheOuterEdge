@@ -17,12 +17,15 @@ public class UserService {
 	
 	private UserDAO userDao;
 	
-	@Autowired
+	//@Autowired
 	private PasswordHashing passwordHash;
 	
+	
+	
 	@Autowired
-	public UserService(UserDAO userDao) {
+	public UserService(UserDAO userDao, PasswordHashing passwordHash) {
 		this.userDao = userDao;
+		this.passwordHash = passwordHash;
 	}
 	
 	public Users addUser(AddUserDTO addUserDto) throws BadParameterException, NoSuchAlgorithmException, InvalidKeySpecException {

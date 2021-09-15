@@ -39,12 +39,11 @@ export class FormService {
   }
 
   postImage(formData:FormData, user:Users, formId:number): Observable<Form> {
-    let header2 = new HttpHeaders();
-    header2.append('Content-Type', 'application/json');
+   // header2.append('Content-Type', 'application/json');
     return this.hc.patch<Form>(`http://localhost:8080/TheOuterEdge/user/${user.id}/form/${formId}/upload`, {
       formData,
       withCredentials: true,
-      header: header2
+      header: new HttpHeaders({ 'Content-Type': 'multipart/form-data' })
     });
 
   }

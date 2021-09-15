@@ -29,7 +29,7 @@ public class FormService {
 
 	public Form addForm(String userId, AddFormDTO addFormDto) throws BadParameterException {
 		if (addFormDto.getTitle().trim().equals("")) {
-			throw new BadParameterException("Name cannot be blank");
+			throw new BadParameterException("title cannot be blank");
 		}
 		try {
 			int uId = Integer.parseInt(userId);
@@ -75,14 +75,14 @@ public class FormService {
 
 	public Form editFormById(String formId, AddFormDTO editFormDto) throws BadParameterException {
 		if (editFormDto.getTitle().trim().equals("")) {
-			throw new BadParameterException("Name cannot be blank");
+			throw new BadParameterException("title cannot be blank");
 		}
 		try {
 			int fId = Integer.parseInt(formId);
 			Form form = formDao.editFormById(fId, editFormDto);
 			return form;
 		} catch (NumberFormatException e) {
-			throw new BadParameterException("user id or form id is not an integer");
+			throw new BadParameterException("Form id is not an integer");
 		}
 	}
 
@@ -110,7 +110,7 @@ public class FormService {
 			Form form = formDao.addComment(uId,fId, commentDto);
 			return form;
 		}catch(NumberFormatException e) {
-			throw new BadParameterException("Form id is not an valid integer");
+			throw new BadParameterException("Form id or user id is not an valid integer");
 		}
 		
 	}
@@ -142,9 +142,10 @@ public class FormService {
 			int fId = Integer.parseInt(formId);
 			formDao.deleteForm(fId);
 		} catch (NumberFormatException e) {
-			throw new BadParameterException("user id or form id is not an integer");
+			throw new BadParameterException("Form id is not an integer");
 		}
 
 	}
+	
 
 }
