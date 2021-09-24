@@ -99,6 +99,16 @@ public class Form {
 		this.submitted = submitTimestamp;
 	}
 
+	public Form(String title, String description, Timestamp eventTime, double latitude, double longitude) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.eventTime = eventTime;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+
+	
 
 
 	

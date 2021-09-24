@@ -46,7 +46,7 @@ public class FormController {
 		this.formService = formService;
 	}
 
-	@PostMapping(path = "user/{userId}/form", consumes = "application/json", produces = "application/json")
+	@PostMapping(path = "/user/{userId}/form", consumes = "application/json", produces = "application/json")
 	@UserProtected
 	public ResponseEntity<Object> addForm(@PathVariable String userId, @RequestBody AddFormDTO addFormDTO) {
 		try {
@@ -79,7 +79,7 @@ public class FormController {
 	
 
 
-	@PatchMapping(path = "user/{userId}/form/{formId}/upload", consumes = "multipart/form-data")
+	@PatchMapping(path = "/user/{userId}/form/{formId}/upload", consumes = "multipart/form-data")
 	@UserProtected
 	public ResponseEntity<Object> addImage(@PathVariable String userId, @PathVariable String formId,
 			@RequestParam("file") MultipartFile file) {
@@ -99,7 +99,7 @@ public class FormController {
 		}
 	}
 
-	@PatchMapping(path = "user/{userId}/form/{formId}", consumes = "application/json", produces = "application/json")
+	@PatchMapping(path = "/user/{userId}/form/{formId}", consumes = "application/json", produces = "application/json")
 	@UserProtected
 	public ResponseEntity<Object> editForm(@PathVariable String userId, @PathVariable String formId,
 			@RequestBody AddFormDTO editFormDTO) {
@@ -119,7 +119,7 @@ public class FormController {
 	}
 
 
-	@PatchMapping(path = "user/{userId}/form/{formId}/comment")
+	@PatchMapping(path = "/user/{userId}/form/{formId}/comment")
 	@UserProtected
 	public ResponseEntity<Object> addComment(@PathVariable String userId, @PathVariable String formId,
 			@RequestBody AddOrEditCommentDTO commentDTO) {
@@ -138,7 +138,7 @@ public class FormController {
 
 	}
 
-	@PatchMapping(path = "user/{userId}/form/{formId}/comment/{commentId}")
+	@PatchMapping(path = "/user/{userId}/form/{formId}/comment/{commentId}")
 	@UserProtected
 	public ResponseEntity<Object> editComment(@PathVariable String userId, @PathVariable String commentId,
 			@RequestBody AddOrEditCommentDTO commentDTO) {
@@ -157,7 +157,7 @@ public class FormController {
 		}
 	}
 
-	@DeleteMapping(path = "user/{userId}/form/{formId}/comment/{commentId}")
+	@DeleteMapping(path = "/user/{userId}/form/{formId}/comment/{commentId}")
 	@UserProtected
 	public ResponseEntity<Object> deleteComment(@PathVariable String userId, @PathVariable String commentId) {
 		HttpSession session = request.getSession(false);
@@ -176,7 +176,7 @@ public class FormController {
 	}
 
 
-	@PatchMapping(path = "admin/{userId}/form/{formId}", consumes = "text/plain", produces = "application/json")
+	@PatchMapping(path = "/admin/{userId}/form/{formId}", consumes = "application/json", produces = "application/json")
 	@AdminProtected
 	public ResponseEntity<Object> editFormStatusAdmin(@PathVariable String formId,
 			@RequestBody EditFormStatusDTO formStatusDto) {
@@ -188,7 +188,7 @@ public class FormController {
 		}
 	}
 
-	@DeleteMapping(path = "user/{userId}/form/{formId}")
+	@DeleteMapping(path = "/user/{userId}/form/{formId}")
 	@UserProtected
 	public ResponseEntity<Object> deleteFormById(@PathVariable String userId, @PathVariable String formId) {
 		try {
@@ -205,7 +205,7 @@ public class FormController {
 		}
 	}
 
-	@DeleteMapping(path = "admin/{userId}/form/{formId}/comment/{commentId}")
+	@DeleteMapping(path = "/admin/{userId}/form/{formId}/comment/{commentId}")
 	@AdminProtected
 	public ResponseEntity<Object> deleteCommentAdmin(@PathVariable String commentId) {
 		try {
@@ -216,7 +216,7 @@ public class FormController {
 		}
 	}
 
-	@DeleteMapping(path = "admin/{userId}/form/{formId}")
+	@DeleteMapping(path = "/admin/{userId}/form/{formId}")
 	@AdminProtected
 	public ResponseEntity<Object> deleteFormAdmin(@PathVariable String formId) {
 		try {

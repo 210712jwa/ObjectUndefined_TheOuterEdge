@@ -4,10 +4,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -22,16 +18,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.dto.LoginDTO;
-import com.revature.exception.BadParameterException;
 import com.revature.model.Users;
 import com.revature.service.LoginService;
 
@@ -44,7 +36,7 @@ public class LoginControllerUnitTest {
 	private LoginService loginService;
 	
 	
-	//private MockHttpServletRequest request;
+//	private MockHttpServletRequest request;
 	
 	@Mock
 	private HttpServletRequest request;
@@ -55,11 +47,12 @@ public class LoginControllerUnitTest {
 	@InjectMocks
 	private LoginController loginController;
 	
-	
-	//private MockHttpSession session;
+	private AutoCloseable closeable;
+
 	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+		
 	}
 
 	@AfterAll
@@ -68,12 +61,15 @@ public class LoginControllerUnitTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
+		closeable = MockitoAnnotations.openMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(loginController).build();
-
+		
+	
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
+		 closeable.close();
 	}
 	
 	@Test
@@ -81,20 +77,110 @@ public class LoginControllerUnitTest {
 		LoginDTO loginDto = new LoginDTO("username","password");
 		Users user = new Users("first", "last", "email@email.com", "username", "password");
 		user.setId(1);
-		
-		when(loginService.login(eq(loginDto))).thenReturn(user);
 		when(request.getSession(eq(true))).thenReturn(session);
+		when(loginService.login(eq(loginDto))).thenReturn(user);
+		
 		Users expectedUser = new Users("first", "last", "email@email.com", "username", "password");
 		expectedUser.setId(1);
 		ObjectMapper om = new ObjectMapper();
 		String loginDtoBody = om.writeValueAsString(loginDto);
+		
 		String expectedUserJson = om.writeValueAsString(expectedUser);
 		
 		mockMvc
-		.perform(post("/login").contentType(MediaType.APPLICATION_JSON).content(loginDtoBody))
-		.andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(MockMvcResultMatchers.content().json(expectedUserJson));
+		.perform(post("/login")
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(loginDtoBody))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().json(expectedUserJson));
 	
+	}
+	
+	@Test
+	void testLogin_alreadyloggedin() throws Exception {
+		LoginDTO loginDto = new LoginDTO("username","password");
+		Users user = new Users("first", "last", "email@email.com", "username", "password");
+		user.setId(1);
+		when(session.getAttribute(eq("currentUser"))).thenReturn(user);
+		when(request.getSession(eq(true))).thenReturn(session);
+		when(loginService.login(eq(loginDto))).thenReturn(user);
+		Users expectedUser = new Users("first", "last", "email@email.com", "username", "password");
+		expectedUser.setId(1);
+		ObjectMapper om = new ObjectMapper();
+		String loginDtoBody = om.writeValueAsString(loginDto);
+		
+		mockMvc
+		.perform(post("/login")
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(loginDtoBody))
+				.andExpect(MockMvcResultMatchers.status().is4xxClientError());
+	
+	}
+	
+	@Test
+	void testGetCurrentUser_success() throws Exception {
+		when(request.getSession(eq(false))).thenReturn(session);
+		Users user = new Users("first", "last", "email@email.com", "username", "password");
+		user.setId(1);
+		when(session.getAttribute(eq("currentUser"))).thenReturn(user);
+		mockMvc
+		.perform(get("/currentuser"))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+		
+	}
+	
+	@Test
+	void testGetCurrentUser_notLogin1() throws Exception {
+		when(request.getSession(eq(false))).thenReturn(session);
+		session = null;
+		mockMvc
+		.perform(get("/currentuser"))
+				.andExpect(MockMvcResultMatchers.status().is4xxClientError());
+		
+	}
+	
+	@Test
+	void testGetCurrentUser_notLogin2() throws Exception {
+		when(request.getSession(eq(false))).thenReturn(session);
+		when(session.getAttribute(eq("currentUser"))).thenReturn(null);
+		mockMvc
+		.perform(get("/currentuser"))
+				.andExpect(MockMvcResultMatchers.status().is4xxClientError());
+		
+	}
+	
+	
+	@Test
+	void testLogout_success() throws Exception {
+		when(request.getSession(eq(false))).thenReturn(session);
+		Users user = new Users("first", "last", "email@email.com", "username", "password");
+		user.setId(1);
+		when(session.getAttribute(eq("currentUser"))).thenReturn(user);
+		mockMvc
+		.perform(post("/logout"))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+		
+	}
+	
+	@Test
+	void testLogout_not_login1() throws Exception {
+		when(request.getSession(eq(false))).thenReturn(session);
+		when(session.getAttribute(eq("currentUser"))).thenReturn(null);
+		mockMvc
+		.perform(post("/logout"))
+				.andExpect(MockMvcResultMatchers.status().is4xxClientError());
+		
+	}
+	
+	@Test
+	void testLogout_not_login2() throws Exception {
+		when(request.getSession(eq(false))).thenReturn(session);
+		session = null;
+		mockMvc
+		.perform(post("/logout"))
+				.andExpect(MockMvcResultMatchers.status().is4xxClientError());
 		
 	}
 }
