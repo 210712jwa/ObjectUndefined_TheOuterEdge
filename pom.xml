@@ -10,6 +10,13 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		
+		<!-- We add these properties based on what SonarCloud tells us to do when first analyzing the project -->
+		<sonar.organization>just-zhu</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		
+		<!-- We will configure an additional property here to tell sonar where to find the code coverage report that Jacoco will generate -->
+		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<dependencies>

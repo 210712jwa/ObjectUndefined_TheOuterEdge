@@ -25,42 +25,50 @@ import com.revature.dto.AddUserDTO;
 import com.revature.dto.LoginDTO;
 import com.revature.model.UserRole;
 import com.revature.model.Users;
+import com.revature.util.PasswordHashing;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 @WebAppConfiguration
+@Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestPropertySource("classpath:springorm-test.properties")
-@Sql({"/schema.sql"})
-@Sql(scripts={"classpath:data.sql"})
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-public class UserDaoTest {
+//@Sql(scripts={"classpath:data.sql"})
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Sql({"/schema.sql", "/data.sql"})
+public class UserDaoTest {	
 	
 	@Autowired
 	private UserDAO userDao;
 	
-
+	@Autowired
+	private PasswordHashing passhash;
+	
 	@Test
-	@Transactional
 	@Order(0)
 	@Commit
-	void testAddUser_success() {
-		byte[] salt = "hash".getBytes();
-		AddUserDTO addUserDto = new AddUserDTO("first", "last", "email@email.com", "username", "password");
+	void testAddUser_success() throws NoSuchAlgorithmException, InvalidKeySpecException {
+		byte[] salt = passhash.getSalt();
+		String passwordHashed = passhash.generateStorngPasswordHash("password", salt);
+		AddUserDTO addUserDto = new AddUserDTO("first", "last", "email@email.com", "username", passwordHashed);
 		Users user = userDao.addUser(addUserDto, salt);
-		assertEquals(1, user.getId());
+		assertEquals("username", user.getUsername());
 	}
 	
 	@Test
-	@Transactional
 	@Order(1)
-	@Commit
-	void testlogin_() throws NoSuchAlgorithmException, InvalidKeySpecException {
+	void testlogin_success() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		LoginDTO dto = new LoginDTO("username", "password");
-		
 		Users user = userDao.getUserByUsernameAndPassword(dto.getUsername(), dto.getPassword());
-		
-		assertEquals(1, user.getId());
+		assertEquals("username", user.getUsername());
+	}
+	
+	@Test
+	@Order(2)
+	void testlogin_fail() throws NoSuchAlgorithmException, InvalidKeySpecException {
+		LoginDTO dto = new LoginDTO("username", "wrongPassword");
+		Users user = userDao.getUserByUsernameAndPassword(dto.getUsername(), dto.getPassword());
+		assertEquals(null, user);
 	}
 
 }

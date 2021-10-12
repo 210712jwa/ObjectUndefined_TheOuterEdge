@@ -28,7 +28,7 @@ public class FormDAO {
 		Session session = sessionFactory.getCurrentSession();
 		Form form = new Form(addFormDto.getTitle(), addFormDto.getDescription());
 		
-		Users user = session.get(Users.class, 1);
+		Users user = session.get(Users.class, userId);
 		FormStatus formStatus = session.get(FormStatus.class, 1);
 		form.setAuthor(user);
 		form.setFormStatus(formStatus);
