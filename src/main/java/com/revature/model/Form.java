@@ -42,7 +42,7 @@ public class Form {
 	@Column(name = "title", nullable = false, length = 100)
 	private String title;
 	
-	@Column(name = "description", length = 500)
+	@Column(name = "description")
 	private String description;
 	
 	@Column(name = "time_submitted", nullable = false)
@@ -76,14 +76,14 @@ public class Form {
 	private Users verifier;
 	
 	@ManyToOne
-	@JoinColumn(name = "verify_staus", nullable = false)
+	@JoinColumn(name = "form_status", nullable = false)
 	private FormStatus formStatus;
-	
+
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "comments")
 	private List<Comment> comments;
 	
-	
+
 	@Transient
 	@JsonIgnore
 	private long now = System.currentTimeMillis();
@@ -99,6 +99,16 @@ public class Form {
 		this.submitted = submitTimestamp;
 	}
 
+	public Form(String title, String description, Timestamp eventTime, double latitude, double longitude) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.eventTime = eventTime;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+
+	
 
 
 	

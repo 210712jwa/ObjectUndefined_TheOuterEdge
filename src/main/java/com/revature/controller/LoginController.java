@@ -30,22 +30,16 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 	
+	@Autowired
+	private HttpServletRequest request;
+	
 	public LoginController(LoginService loginService) {
 		this.loginService = loginService;
 	}
 	
-	@Autowired
-	private HttpServletRequest request;
 	
-	
-	
-	public LoginController(LoginService loginService, HttpServletRequest request) {
-		super();
-		this.loginService = loginService;
-		this.request = request;
-	}
 
-	@PostMapping(path = "/login", consumes = "application/json", produces = "application/jso" )
+	@PostMapping(path = "/login", consumes = "application/json", produces = "application/json" )
 	public ResponseEntity<Object> login(@RequestBody LoginDTO loginDto) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		try {
 			Users user = this.loginService.login(loginDto);

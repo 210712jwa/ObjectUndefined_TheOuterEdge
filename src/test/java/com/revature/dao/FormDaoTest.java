@@ -13,6 +13,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 @WebAppConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestPropertySource("classpath:springorm-test.properties")
-@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Sql({"/schema.sql", "/data.sql"})
 public class FormDaoTest {
-	
 
+	
+	
+	
+	
 }
